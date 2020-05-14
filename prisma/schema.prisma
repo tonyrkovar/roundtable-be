@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Issues {
+  author       Int
+  id           Int         @default(autoincrement()) @id
+  roundtableId Int
+  title        String
+  Users        Users       @relation(fields: [author], references: [id])
+  Roundtables  Roundtables @relation(fields: [roundtableId], references: [id])
+  Questions    Questions[]
+}
+
+model Members {
+  id           Int         @default(autoincrement()) @id
+  roundtableId Int
+  userId       Int
+  Roundtables  Roundtables @relation(fields: [roundtableId], references: [id])
+  Users        Users       @relation(fields: [userId], references: [id])
+}
+
+model Questions {
+  author    Int
+  id        Int         @default(autoincrement()) @id
+  issueId   Int
+  Users     Users       @relation(fields: [author], references: [id])
+  Issues    Issues      @relation(fields: [issueId], references: [id])
+  Responses Responses[]
+}
+
+model Responses {
+  author     Int
+  content    String
+  id         Int       @default(autoincrement()) @id
+  questionId Int
+  Users      Users     @relation(fields: [author], references: [id])
+  Questions  Questions @relation(fields: [questionId], references: [id])
+}
+
+model Roundtables {
+  createdAt      DateTime  @default(now())
+  id             Int       @default(autoincrement()) @id
+  owner          Int
+  roundtablename String
+  Users          Users     @relation(fields: [owner], references: [id])
+  Issues         Issues[]
+  Members        Members[]
+}
+
+model Users {
+  createdAt   DateTime      @default(now())
+  email       String        @unique
+  id          Int           @default(autoincrement()) @id
+  password    String?
+  Issues      Issues[]
+  Members     Members[]
+  Questions   Questions[]
+  Responses   Responses[]
+  Roundtables Roundtables[]
+}
