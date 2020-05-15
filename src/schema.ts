@@ -1,28 +1,35 @@
 import { makeExecutableSchema } from "graphql-tools";
-import { Context } from "./context";
-// type Roundtable{
-
-// }
+import { resolvers } from "./resolvers/index";
+import { Context, context } from "./context";
 
 const typeDefs = `
   type User {
     id: ID!
     email: String!
     password: String!
+	createdAt: String! 
   }
 
+  type Roundtable{
+	  id: ID!
+	  name: String!
+	  createdAt: String! 
+  }
 
   type Query {
     info: String!
     user: User!
     userById(id: ID!): User!
-    users: [User!]!
+	users: [User!]!
+	roundtable: Roundtable!
+	roundtables: [Roundtable]!
   }
 
   type Mutation {
     createUser(email: String!, password: String!): User!
     deleteUser(id: ID): User!
-    updateUser(id: ID!, email: String, password: String): User!
+	updateUser(id: ID!, email: String, password: String): User!
+	createRoundtable(name: String!): Roundtable! 
   }
 
   input UserCreateInput {
@@ -32,45 +39,4 @@ const typeDefs = `
 
 `;
 
-const resolvers = {
-	Query: {
-		info: (_parent, _args, ctx: Context) => {
-			return "Hello Worldie";
-		},
-		userById: (_parent, args, ctx: Context) => {
-			return ctx.prisma.users.findOne({
-				where: {
-					id: Number(args.id),
-				},
-			});
-		},
-		users: (_, __, ctx: Context) => {
-			return ctx.prisma.users.findMany();
-		},
-	},
-	Mutation: {
-		createUser: (parent, args, ctx: Context) => {
-			return ctx.prisma.users.create({ data: args });
-		},
-		deleteUser: (parent, args, ctx: Context) => {
-			return ctx.prisma.users.delete({
-				where: {
-					id: Number(args.id),
-				},
-			});
-		},
-		updateUser: (parent, args, ctx: Context) => {
-			return ctx.prisma.users.update({
-				data: {
-					email: args.email,
-					password: args.password,
-				},
-				where: {
-					id: Number(args.id),
-				},
-			});
-		},
-	},
-};
-
-export const schema = makeExecutableSchema({ resolvers, typeDefs });
+export const schema = makeExecutableSchema({ typeDefs, resolvers });
