@@ -7,60 +7,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Issues {
-  author       Int
-  id           Int         @default(autoincrement()) @id
-  roundtableId Int
-  title        String
-  Users        Users       @relation(fields: [author], references: [id])
-  Roundtables  Roundtables @relation(fields: [roundtableId], references: [id])
-  Questions    Questions[]
+model Issue {
+  id            Int        @default(autoincrement()) @id
+  issueAuthorId Int
+  roundtableId  Int
+  title         String
+  user          User       @relation(fields: [issueAuthorId], references: [id])
+  roundtable    Roundtable @relation(fields: [roundtableId], references: [id])
+  questions      Question[]
 }
 
-model Members {
-  id           Int         @default(autoincrement()) @id
+model Member {
+  id           Int        @default(autoincrement()) @id
   roundtableId Int
   userId       Int
-  Roundtables  Roundtables @relation(fields: [roundtableId], references: [id])
-  Users        Users       @relation(fields: [userId], references: [id])
+  roundtable   Roundtable @relation(fields: [roundtableId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
 }
 
-model Questions {
-  author    Int
-  id        Int         @default(autoincrement()) @id
-  issueId   Int
-  Users     Users       @relation(fields: [author], references: [id])
-  Issues    Issues      @relation(fields: [issueId], references: [id])
-  Responses Responses[]
+model Question {
+  authorId Int
+  id       Int        @default(autoincrement()) @id
+  issueId  Int
+  user     User       @relation(fields: [authorId], references: [id])
+  issue    Issue      @relation(fields: [issueId], references: [id])
+  responses Response[]
 }
 
-model Responses {
-  author     Int
-  content    String
-  id         Int       @default(autoincrement()) @id
-  questionId Int
-  Users      Users     @relation(fields: [author], references: [id])
-  Questions  Questions @relation(fields: [questionId], references: [id])
+model Response {
+  content          String
+  id               Int      @default(autoincrement()) @id
+  questionAuthorId Int
+  questionId       Int
+  user             User     @relation(fields: [questionAuthorId], references: [id])
+  question         Question @relation(fields: [questionId], references: [id])
 }
 
-model Roundtables {
-  createdAt      DateTime  @default(now())
-  id             Int       @default(autoincrement()) @id
-  owner          Int
+model Roundtable {
+  createdAt      DateTime @default(now())
+  description    String?
+  id             Int      @default(autoincrement()) @id
+  ownerId        Int
   roundtablename String
-  Users          Users     @relation(fields: [owner], references: [id])
-  Issues         Issues[]
-  Members        Members[]
+  user           User     @relation(fields: [ownerId], references: [id])
+  issues          Issue[]
+  member         Member[]
 }
 
-model Users {
-  createdAt   DateTime      @default(now())
-  email       String        @unique
-  id          Int           @default(autoincrement()) @id
-  password    String?
-  Issues      Issues[]
-  Members     Members[]
-  Questions   Questions[]
-  Responses   Responses[]
-  Roundtables Roundtables[]
+model User {
+  createdAt  DateTime     @default(now())
+  email      String       @unique
+  id         Int          @default(autoincrement()) @id
+  name       String?
+  password   String?
+  issues      Issue[]
+  member     Member[]
+  questions   Question[]
+  responses   Response[]
+  roundtables Roundtable[]
 }
