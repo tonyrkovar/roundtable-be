@@ -1,13 +1,72 @@
 import { Context } from "../../context";
 
-// export const userById = (_parent, args, ctx: Context) => {
-// 	return ctx.prisma.users.findOne({
+// User Queries
+export const users = (_, args, ctx: Context) => {
+	return ctx.prisma.user.findMany();
+};
+
+export const userById = (_parent, args, ctx: Context) => {
+	return ctx.prisma.user.findOne({
+		where: {
+			id: +args.id,
+		},
+	});
+};
+
+export const userByEmail = (_parent, args, ctx: Context) => {
+	return ctx.prisma.user.findOne({
+		where: {
+			email: args.email,
+		},
+	});
+};
+
+// Roundtable Queries
+export const roundtables = (_, args, ctx: Context) => {
+	return ctx.prisma.roundtable.findMany();
+};
+
+export const roundtableById = (_, args, ctx: Context) => {
+	return ctx.prisma.roundtable.findOne({
+		where: {
+			id: +args.id,
+		},
+	});
+};
+
+export const roundtablesByUserId = (_, args, ctx: Context) => {
+	return ctx.prisma.roundtable.findMany({
+		where: {
+			owner: { id: +args.owner },
+		},
+	});
+};
+
+// Issue Queries
+export const issues = (_, args, ctx: Context) => {
+	return ctx.prisma.issue.findMany();
+};
+
+// Question Queries
+export const questions = (_, args, ctx: Context) => {
+	return ctx.prisma.question.findMany();
+};
+
+// Response Queries
+export const responses = (_, args, ctx: Context) => {
+	return ctx.prisma.response.findMany();
+};
+
+// Memeber Queries ========= Come back to this ==========
+// export const membersByRTId = (_, args, ctx: Context) => {
+// 	return ctx.prisma.member.findMany({
 // 		where: {
-// 			id: Number(args.id),
+// 			roundtableId: +args.roundtableId,
 // 		},
 // 	});
 // };
 
-export const users = (_, args, ctx: Context) => {
-	return ctx.prisma.user.findMany();
-};
+// Query Template
+// export const roundtables = (_, args, ctx: Context) => {
+
+// }

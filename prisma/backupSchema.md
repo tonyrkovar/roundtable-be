@@ -12,7 +12,7 @@ id Int @default(autoincrement()) @id
 issueAuthorId Int
 roundtableId Int
 title String
-user User @relation(fields: [issueAuthorId], references: [id])
+issueAuthor User @relation(fields: [issueAuthorId], references: [id])
 roundtable Roundtable @relation(fields: [roundtableId], references: [id])
 questions Question[]
 }
@@ -28,8 +28,9 @@ user User @relation(fields: [userId], references: [id])
 model Question {
 authorId Int
 id Int @default(autoincrement()) @id
+prompt String
 issueId Int
-user User @relation(fields: [authorId], references: [id])
+author User @relation(fields: [authorId], references: [id])
 issue Issue @relation(fields: [issueId], references: [id])
 responses Response[]
 }
@@ -39,7 +40,7 @@ content String
 id Int @default(autoincrement()) @id
 questionAuthorId Int
 questionId Int
-user User @relation(fields: [questionAuthorId], references: [id])
+questionAuthor User @relation(fields: [questionAuthorId], references: [id])
 question Question @relation(fields: [questionId], references: [id])
 }
 
@@ -49,7 +50,7 @@ description String?
 id Int @default(autoincrement()) @id
 ownerId Int
 roundtablename String
-user User @relation(fields: [ownerId], references: [id])
+owner User @relation(fields: [ownerId], references: [id])
 issues Issue[]
 member Member[]
 }
