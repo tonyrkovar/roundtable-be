@@ -26,6 +26,22 @@ export const roundtables = (_, args, ctx: Context) => {
 	return ctx.prisma.roundtable.findMany();
 };
 
+export const roundtableById = (_, args, ctx: Context) => {
+	return ctx.prisma.roundtable.findOne({
+		where: {
+			id: +args.id,
+		},
+	});
+};
+
+export const roundtablesByUserId = (_, args, ctx: Context) => {
+	return ctx.prisma.roundtable.findMany({
+		where: {
+			owner: { id: +args.owner },
+		},
+	});
+};
+
 // Issue Queries
 export const issues = (_, args, ctx: Context) => {
 	return ctx.prisma.issue.findMany();
@@ -36,10 +52,19 @@ export const questions = (_, args, ctx: Context) => {
 	return ctx.prisma.question.findMany();
 };
 
-//Response Queries
+// Response Queries
 export const responses = (_, args, ctx: Context) => {
 	return ctx.prisma.response.findMany();
 };
+
+// Memeber Queries ========= Come back to this ==========
+// export const membersByRTId = (_, args, ctx: Context) => {
+// 	return ctx.prisma.member.findMany({
+// 		where: {
+// 			roundtableId: +args.roundtableId,
+// 		},
+// 	});
+// };
 
 // Query Template
 // export const roundtables = (_, args, ctx: Context) => {
