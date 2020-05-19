@@ -28,7 +28,6 @@ export const deleteUser = (parent, args, ctx: Context) => {
 
 // Roundtable Mutations
 export const createRoundtable = (parent, args, ctx: Context) => {
-	console.log(args);
 	return ctx.prisma.roundtable.create({
 		data: {
 			roundtablename: args.roundtablename,
