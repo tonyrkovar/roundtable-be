@@ -2,26 +2,41 @@ export const typeDefs = `
 
 	type Query {
 		info: String!
+
 		user: User!
 		users: [User!]!
 		userById(id: ID!): User!
 		userByEmail(email: String!): User!
+
 		roundtable: Roundtable!
 		roundtables: [Roundtable]!
+		roundtableById(id: ID!): Roundtable!
+		roundtablesByUserId(owner: ID!): [Roundtable!]!
+
 		issues: [Issue]!	
 		issue: Issue!	
+
 		questions: [Question]!
 		question: Question!
+
 		responses: [Response]!
 		response: Response!
+
+		membersByRTId(roundtableId: ID!): Member!
 	}
 
 	type Mutation {
 		createUser(email: String!, password: String): User!
 		deleteUser(id: ID): User!
 		updateUser(id: ID!, email: String, password: String): User!
+
 		createRoundtable(roundtablename: String!, owner: ID!, description: String): Roundtable!
 		deleteRoundtable(id: ID!): Roundtable!
+		updateRoundtable(id: ID!, owner: ID, roundtablename: String, description: String): Roundtable!
+
+		createIssue(issueAuthor: ID!, roundtable: ID!, title: String!): Issue!
+		deleteIssue(id: ID!): Issue!
+		updateIssue(id: ID!, title: String): Issue!
 	}
 	
 	input UserCreateInput {
@@ -44,6 +59,7 @@ export const typeDefs = `
 		owner: User!
 		createdAt: String!
 		description: String!
+		issues: [Issue!]!
 	}
 
 	type Issue{
@@ -65,5 +81,10 @@ export const typeDefs = `
 		questionAuthor: User!
 		issue: Issue!
 		response: [Response]!
+	}
+
+	type Member{
+		roundtable: Roundtable!
+		user: [User!]! 
 	}
 	`;
