@@ -37,6 +37,10 @@ export const typeDefs = `
 		createIssue(issueAuthor: ID!, roundtable: ID!, title: String!): Issue!
 		deleteIssue(id: ID!): Issue!
 		updateIssue(id: ID!, title: String): Issue!
+
+		createQuestion(author: ID!, issue: ID!, prompt: String!): Question!
+		updateQuestion(id: ID!, prompt: String!): Question!
+		deleteQuestion(id: ID!): Question!
 	}
 	
 	input UserCreateInput {
@@ -78,7 +82,8 @@ export const typeDefs = `
 
 	type Question{
 		id: ID!
-		questionAuthor: User!
+		author: User!
+		prompt: String!
 		issue: Issue!
 		response: [Response]!
 	}
