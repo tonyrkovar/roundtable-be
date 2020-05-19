@@ -96,3 +96,38 @@ export const updateIssue = (_, args, ctx: Context) => {
 		},
 	});
 };
+
+// Question Mutations
+
+export const createQuestion = (_, args, ctx: Context) => {
+	return ctx.prisma.question.create({
+		data: {
+			author: {
+				connect: { id: +args.author },
+			},
+			issue: {
+				connect: { id: +args.issue },
+			},
+			prompt: args.prompt,
+		},
+	});
+};
+
+export const updateQuestion = (_, args, ctx: Context) => {
+	return ctx.prisma.question.update({
+		where: {
+			id: +args.id,
+		},
+		data: {
+			prompt: args.prompt,
+		},
+	});
+};
+
+export const deleteQuestion = (_, args, ctx: Context) => {
+	return ctx.prisma.question.delete({
+		where: {
+			id: +args.id,
+		},
+	});
+};
