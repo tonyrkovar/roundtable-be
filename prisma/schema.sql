@@ -35,6 +35,7 @@ CREATE TABLE "public"."Issue"(
 
 CREATE TABLE "public"."Question"(
     id SERIAL PRIMARY KEY NOT NULL,
+    prompt VARCHAR(255) NOT NULL,
     "issueId" INTEGER NOT NULL,
     FOREIGN KEY ("issueId") REFERENCES "public"."Issue"(id),
     "authorId" INTEGER NOT NULL,
