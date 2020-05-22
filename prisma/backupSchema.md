@@ -10,9 +10,10 @@ url = env("DATABASE_URL")
 model Issue {
 id Int @default(autoincrement()) @id
 issueAuthorId Int
+prompt String?
 roundtableId Int
 title String
-issueAuthor User @relation(fields: [issueAuthorId], references: [id])
+User User @relation(fields: [issueAuthorId], references: [id])
 roundtable Roundtable @relation(fields: [roundtableId], references: [id])
 questions Question[]
 }
@@ -28,8 +29,8 @@ user User @relation(fields: [userId], references: [id])
 model Question {
 authorId Int
 id Int @default(autoincrement()) @id
-prompt String
 issueId Int
+question String
 author User @relation(fields: [authorId], references: [id])
 issue Issue @relation(fields: [issueId], references: [id])
 responses Response[]
@@ -38,10 +39,10 @@ responses Response[]
 model Response {
 content String
 id Int @default(autoincrement()) @id
-questionAuthorId Int
 questionId Int
-questionAuthor User @relation(fields: [questionAuthorId], references: [id])
+responseAuthorId Int
 question Question @relation(fields: [questionId], references: [id])
+responseAuthor User @relation(fields: [responseAuthorId], references: [id])
 }
 
 model Roundtable {
@@ -52,17 +53,19 @@ ownerId Int
 roundtablename String
 owner User @relation(fields: [ownerId], references: [id])
 issues Issue[]
-member Member[]
+members Member[]
 }
 
 model User {
 createdAt DateTime @default(now())
 email String @unique
+firstName String?
 id Int @default(autoincrement()) @id
-name String?
+lastName String?
 password String?
+username String?
 issues Issue[]
-member Member[]
+memberOf Member[]
 questions Question[]
 responses Response[]
 roundtables Roundtable[]

@@ -4,66 +4,69 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
 model Issue {
-  id            Int        @default(autoincrement()) @id
+  id Int @default(autoincrement()) @id
   issueAuthorId Int
-  roundtableId  Int
-  title         String
-  issueAuthor          User       @relation(fields: [issueAuthorId], references: [id])
-  roundtable    Roundtable @relation(fields: [roundtableId], references: [id])
-  questions      Question[]
+  prompt String?
+  roundtableId Int
+  title String
+  issueAuthor User @relation(fields: [issueAuthorId], references: [id])
+  roundtable Roundtable @relation(fields: [roundtableId], references: [id])
+  questions Question[]
 }
 
 model Member {
-  id           Int        @default(autoincrement()) @id
+  id Int @default(autoincrement()) @id
   roundtableId Int
-  userId       Int
-  roundtable   Roundtable @relation(fields: [roundtableId], references: [id])
-  user         User       @relation(fields: [userId], references: [id])
+  userId Int
+  roundtable Roundtable @relation(fields: [roundtableId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Question {
   authorId Int
-  id       Int        @default(autoincrement()) @id
-  prompt   String
-  issueId  Int
-  author   User       @relation(fields: [authorId], references: [id])
-  issue    Issue      @relation(fields: [issueId], references: [id])
+  id Int @default(autoincrement()) @id
+  issueId Int
+  question String
+  author User @relation(fields: [authorId], references: [id])
+  issue Issue @relation(fields: [issueId], references: [id])
   responses Response[]
 }
 
 model Response {
-  content          String
-  id               Int      @default(autoincrement()) @id
-  questionAuthorId Int
-  questionId       Int
-  questionAuthor             User     @relation(fields: [questionAuthorId], references: [id])
-  question         Question @relation(fields: [questionId], references: [id])
+  content String
+  id Int @default(autoincrement()) @id
+  questionId Int
+  responseAuthorId Int
+  question Question @relation(fields: [questionId], references: [id])
+  responseAuthor User @relation(fields: [responseAuthorId], references: [id])
 }
 
 model Roundtable {
-  createdAt      DateTime @default(now())
-  description    String?
-  id             Int      @default(autoincrement()) @id
-  ownerId        Int
-  roundtablename String
-  owner           User     @relation(fields: [ownerId], references: [id])
-  issues          Issue[]
-  member         Member[]
+  createdAt DateTime @default(now())
+  description String?
+  id Int @default(autoincrement()) @id
+  ownerId Int
+  roundtableName String
+  owner User @relation(fields: [ownerId], references: [id])
+  issues Issue[]
+  members Member[]
 }
 
 model User {
-  createdAt  DateTime     @default(now())
-  email      String       @unique
-  id         Int          @default(autoincrement()) @id
-  name       String?
-  password   String?
-  issues      Issue[]
-  member     Member[]
-  questions   Question[]
-  responses   Response[]
+createdAt DateTime @default(now())
+  email String @unique
+  firstName String?
+  id Int @default(autoincrement()) @id
+  lastName String?
+  password String?
+  userName String?
+  issues Issue[]
+  memberOf Member[]
+  questions Question[]
+  responses Response[]
   roundtables Roundtable[]
 }
