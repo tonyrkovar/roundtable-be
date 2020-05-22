@@ -1,4 +1,5 @@
 import { Context } from "../../context";
+import { Z_ASCII } from "zlib";
 
 // User Queries
 export const users = (_, args, ctx: Context) => {
@@ -47,14 +48,54 @@ export const issues = (_, args, ctx: Context) => {
 	return ctx.prisma.issue.findMany();
 };
 
+export const issueById = (parent, args, ctx: Context) => {
+	return ctx.prisma.issue.findOne({
+		where: {
+			id: +args.id,
+		},
+	});
+};
+
 // Question Queries
 export const questions = (_, args, ctx: Context) => {
 	return ctx.prisma.question.findMany();
 };
 
+export const questionById = (parent, args, ctx: Context) => {
+	return ctx.prisma.question.findOne({
+		where: {
+			id: +args.id,
+		},
+	});
+};
+
+export const questionsByIssueId = (parent, args, ctx: Context) => {
+	return ctx.prisma.question.findMany({
+		where: {
+			issue: { id: +args.id },
+		},
+	});
+};
+
 // Response Queries
 export const responses = (_, args, ctx: Context) => {
 	return ctx.prisma.response.findMany();
+};
+
+export const responseById = (parent, args, ctx: Context) => {
+	return ctx.prisma.response.findOne({
+		where: {
+			id: +args.id,
+		},
+	});
+};
+
+export const memberById = (parent, args, ctx: Context) => {
+	return ctx.prisma.member.findOne({
+		where: {
+			id: +args.id,
+		},
+	});
 };
 
 // Query Template
