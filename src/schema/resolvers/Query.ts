@@ -57,15 +57,6 @@ export const responses = (_, args, ctx: Context) => {
 	return ctx.prisma.response.findMany();
 };
 
-// Memeber Queries ========= Come back to this ==========
-// export const membersByRTId = (_, args, ctx: Context) => {
-// 	return ctx.prisma.member.findMany({
-// 		where: {
-// 			roundtableId: +args.roundtableId,
-// 		},
-// 	});
-// };
-
 // Query Template
 // export const roundtables = (_, args, ctx: Context) => {
 
