@@ -187,3 +187,11 @@ export const createMember = (_, args, ctx: Context) => {
 		},
 	});
 };
+
+export const removeMember = (_, args, ctx: Context) => {
+	return ctx.prisma.member.delete({
+		where: {
+			id: +args.id,
+		},
+	});
+};

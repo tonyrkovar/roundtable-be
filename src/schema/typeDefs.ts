@@ -15,15 +15,20 @@ export const typeDefs = `
 
 		issues: [Issue]!	
 		issue: Issue!	
+		issueById(id: ID!): Issue!
 
 		questions: [Question]!
 		question: Question!
+		questionById(id: ID!): Question!
+		questionsByIssueId(id: ID!): [Question!]!
 
 		responses: [Response]!
 		response: Response!
+		responseById(id: ID!): Response!
 
 		member: Member!
 		members: [Member!]!
+		memberById(id: ID!): Member!
 		membersByRTId(roundtableId: ID!): Member!
 	}
 
@@ -49,6 +54,7 @@ export const typeDefs = `
 		deleteResponse(id: ID!): Response!
 
 		createMember(roundtable: ID!, user: ID!): Member!
+		removeMember(id: ID!): Member!
 	}
 	
 	input UserInput {
