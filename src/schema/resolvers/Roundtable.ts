@@ -19,3 +19,13 @@ export const issues = (parent, _, ctx: Context) => {
 		})
 		.issues();
 };
+
+export const members = (parent, _, ctx: Context) => {
+	return ctx.prisma.roundtable
+		.findOne({
+			where: {
+				id: parent.id,
+			},
+		})
+		.members();
+};
