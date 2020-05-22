@@ -3,15 +3,13 @@ import { roundtables } from "./Query";
 
 // User Mutations
 export const createUser = (parent, args, ctx: Context) => {
-	return ctx.prisma.user.create({ data: args });
+	console.log(args);
+	return ctx.prisma.user.create(args);
 };
 
 export const updateUser = (parent, args, ctx: Context) => {
 	return ctx.prisma.user.update({
-		data: {
-			email: args.email,
-			password: args.password,
-		},
+		data: args.data,
 		where: {
 			id: +args.id,
 		},
@@ -30,7 +28,7 @@ export const deleteUser = (parent, args, ctx: Context) => {
 export const createRoundtable = (parent, args, ctx: Context) => {
 	return ctx.prisma.roundtable.create({
 		data: {
-			roundtablename: args.roundtablename,
+			roundtableName: args.roundtableName,
 			description: args.description,
 			owner: {
 				connect: { id: +args.owner },
@@ -54,7 +52,7 @@ export const updateRoundtable = (parent, args, ctx: Context) => {
 		},
 		data: {
 			description: args.description,
-			roundtablename: args.roundtablename,
+			roundtableName: args.roundtableName,
 			owner: {
 				connect: { id: +args.owner },
 			},
@@ -74,6 +72,7 @@ export const createIssue = (_, args, ctx: Context) => {
 				connect: { id: +args.roundtable },
 			},
 			title: args.title,
+			prompt: args.prompt,
 		},
 	});
 };
@@ -93,6 +92,7 @@ export const updateIssue = (_, args, ctx: Context) => {
 		},
 		data: {
 			title: args.title,
+			prompt: args.prompt,
 		},
 	});
 };
@@ -108,7 +108,7 @@ export const createQuestion = (_, args, ctx: Context) => {
 			issue: {
 				connect: { id: +args.issue },
 			},
-			prompt: args.prompt,
+			question: args.question,
 		},
 	});
 };
@@ -119,7 +119,7 @@ export const updateQuestion = (_, args, ctx: Context) => {
 			id: +args.id,
 		},
 		data: {
-			prompt: args.prompt,
+			question: args.question,
 		},
 	});
 };
@@ -128,6 +128,62 @@ export const deleteQuestion = (_, args, ctx: Context) => {
 	return ctx.prisma.question.delete({
 		where: {
 			id: +args.id,
+		},
+	});
+};
+
+// Response Mutations
+
+export const createResponse = (_, args, ctx: Context) => {
+	return ctx.prisma.response.create({
+		data: {
+			responseAuthor: {
+				connect: { id: +args.responseAuthor },
+			},
+			question: {
+				connect: { id: +args.question },
+			},
+			content: args.content,
+		},
+	});
+};
+
+export const updateResponse = (_, args, ctx: Context) => {
+	return ctx.prisma.response.update({
+		where: {
+			id: +args.responseId,
+		},
+		data: {
+			content: args.content,
+			question: {
+				connect: { id: +args.question },
+			},
+			responseAuthor: {
+				connect: { id: +args.responseAuthor },
+			},
+		},
+	});
+};
+
+export const deleteResponse = (_, args, ctx: Context) => {
+	return ctx.prisma.response.delete({
+		where: {
+			id: +args.id,
+		},
+	});
+};
+
+// Member Mutations
+
+export const createMember = (_, args, ctx: Context) => {
+	return ctx.prisma.member.create({
+		data: {
+			roundtable: {
+				connect: { id: +args.roundtable },
+			},
+			user: {
+				connect: { id: +args.user },
+			},
 		},
 	});
 };
