@@ -10,7 +10,7 @@ export const questions = (parent, args, ctx: Context) => {
 		.questions();
 };
 
-export const author = (parent, _, ctx: Context) => {
+export const issueAuthor = (parent, _, ctx: Context) => {
 	return ctx.prisma.issue
 		.findOne({
 			where: {
