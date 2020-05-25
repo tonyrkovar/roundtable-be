@@ -1,7 +1,6 @@
 export const typeDefs = `
 
 	type Query {
-		info: String!
 
 		user: User!
 		users: [User!]!
